@@ -25,6 +25,8 @@ glm::vec3 shader_switch = glm::vec3(1.0, 1.0, 1.0);
 GLboolean bShowNormalsAsRgb = false;
 GLboolean bUseGammaCorrection = true;
 float zoomFactor = 1.0;
+float toonShading_a = 0.7f;
+float toonShading_b = 0.3f;
 std::vector<GLuint> asdf = {};
 GLuint harambe;
 
@@ -255,6 +257,8 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 	glUniformMatrix4fv(glGetUniformLocation(program, "u_mv"), 1, GL_FALSE, &mv[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "u_mvp"), 1, GL_FALSE, &mvp[0][0]);
 	glUniform1f(glGetUniformLocation(program, "u_time"), ctx.elapsed_time);
+	glUniform1f(glGetUniformLocation(program, "u_toonA"), toonShading_a);
+	glUniform1f(glGetUniformLocation(program, "u_toonB"), toonShading_b);
 	// ...
 
 	// Draw!
@@ -489,43 +493,77 @@ int main(void)
 			}
 	
 			ImGui::Spacing();
-			if (ImGui::CollapsingHeader("Help"))
-			{
-				
+			
 
-				if (ImGui::TreeNode("Mixed items"))
-				{
-					ImGui::Columns(3, "mixed");
+				
+					ImGui::Columns(2, "mixed");
 					ImGui::Separator();
 
-					ImGui::Text("Hello");
-					ImGui::Button("Banana");
+
+					ImGui::Text("ToonAdjust_a");
+					ImGui::SliderFloat("Wrap width2", &toonShading_a, -1, 10, "%.1f");
 					ImGui::NextColumn();
 
-					ImGui::Text("ImGui");
-					ImGui::Button("Apple");
-					static float foo = 1.0f;
-					ImGui::InputFloat("red", &zoomFactor, 0.05f, 0, 3);
-					ImGui::Text("An extra line here.");
-					ImGui::NextColumn();
-
-					ImGui::Text("Sailor");
-					ImGui::Button("Corniflower");
+					ImGui::Text("ToonAdjust_b");
 					static float bar = 1.0f;
-					ImGui::InputFloat("blue", &bar, 0.05f, 0, 3);
+					ImGui::SliderFloat("Wrap width", &toonShading_b, -10, 2, "%.1f");
+					ImGui::NextColumn();
+				
+					ImGui::Separator();
+					ImGui::Text("LIGHT");
+					
+					//Light-gui
+					static bool c1 = false, c2 = false, c3 = false;
+					int n1 = 0, n2 = 0, n3 = 0;
+					ImGui::Checkbox("Diffuse", &c1);
+					ImGui::Checkbox("Ambient", &c2);
+					ImGui::Checkbox("Specular", &c3);
 					ImGui::NextColumn();
 
-					if (ImGui::CollapsingHeader("Category A")) ImGui::Text("Blah blah blah"); ImGui::NextColumn();
-					if (ImGui::CollapsingHeader("Category B")) ImGui::Text("Blah blah blah"); ImGui::NextColumn();
-					if (ImGui::CollapsingHeader("Category C")) ImGui::Text("Blah blah blah"); ImGui::NextColumn();
-					ImGui::Columns(1);
+					//zoom
+					ImGui::Text("ZOOM");
+					ImGui::InputFloat("blue", &zoomFactor, 0.05f, 0, 3);
+					ImGui::NextColumn();
 					ImGui::Separator();
-					ImGui::TreePop();
-				}
 
 
-				
-			}
+
+					if (c1 && n1==0)
+					{
+						n1 = 1;
+						if (shader_switch.x == 0.0) {
+							shader_switch.x = 1.0;
+						}
+						else shader_switch.x = 0.0;
+					}else if (!c1 && n1 == 1) {
+						n1 = 0;
+					}
+
+					if (c2 && n2==0)
+					{
+						n2 = 1;
+						if (shader_switch.y == 0.0) {
+							shader_switch.y = 1.0;
+						}
+						else shader_switch.y = 0.0;
+					}else if (!c2 && n2 == 1) {
+						n2 = 0;
+					}
+
+					if (c3 && n3==0)
+					{
+						n3 = 1;
+						if (shader_switch.z == 0.0) {
+							shader_switch.z = 1.0;
+						}
+						else shader_switch.z = 0.0;
+					}else if (!c3 && n3 == 1) {
+						n3 = 0;
+					}
+					
+
+
+			
 		
 		
 	//	ImGui_ImplGlfwGL3_NewFrame();

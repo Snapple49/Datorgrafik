@@ -26,6 +26,12 @@ out float showNormalsAsRgb;
 uniform float u_useGammaCorrection;
 out float useGammaCorrection;
 
+//gui-related
+uniform float u_toonA;
+uniform float u_toonB;
+out float toonA;
+out float toonB;
+
 //out vec3 viewPos;
 out vec3 fragPos;
 
@@ -33,6 +39,10 @@ uniform sampler2D u_texture;
 
 void main()
 {
+    //gui-related
+	 toonA = u_toonA;
+	 toonB = u_toonB;
+
     v_normal = a_normal;
 
 	// Cel shading outline
