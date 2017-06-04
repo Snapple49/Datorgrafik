@@ -20,6 +20,9 @@ vec3 specular_color;
 in vec3 shader_switch;
 in float showNormalsAsRgb;
 in float useGammaCorrection;
+//gui-related
+in float toonA;
+in float toonB;
 
 uniform samplerCube u_cubemap;
 
@@ -70,7 +73,7 @@ void main()
 	frag_color = vec4(1.0,1.0,1.0,1.0);
 	// Cel shading outline
 	// Bra parametrar för imgui
-	if (dot(V, N) < mix(0.7f, 0.3f, max(0.0, dot(N,L)))){
+	if (dot(V, N) < mix(toonA, toonB, max(0.0, dot(N,L)))){
 		frag_color = vec4(1.0,1.0,1.0,1.0) * vec4(0.0,0.0,0.0,1.0);
 	}
 	// cross-hatching shader
