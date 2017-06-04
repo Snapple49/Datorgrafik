@@ -195,7 +195,7 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 	// Define uniforms
 	glm::mat4 model = trackballGetRotationMatrix(ctx.trackball);
 	glm::mat4 view = glm::lookAt(glm::vec3(0, 0, 8), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)); // glm::mat4();
-	glm::mat4 projection = glm::perspective(glm::radians(30.0f)*zoomFactor, ctx.aspect, 0.1f, 150.0f); //glm::ortho(-ctx.aspect, ctx.aspect, -1.0f, 1.0f, -1.0f, 1.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(30.0f)*zoomFactor, 1.0f, 0.1f, 150.0f); //glm::ortho(-ctx.aspect, ctx.aspect, -1.0f, 1.0f, -1.0f, 1.0f);
 	glm::mat4 mv = view * model;
 	glm::mat4 mvp = projection * mv;
 	// ...
@@ -242,6 +242,7 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 	glBindVertexArray(meshVAO.vao);
 	glDrawElements(GL_TRIANGLES, meshVAO.numIndices, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(ctx.defaultVAO);
+//	ImGui::ShowTestWindow();
 }
 
 void display(Context &ctx)
@@ -422,8 +423,6 @@ int main(void)
 	glfwSetMouseButtonCallback(ctx.window, mouseButtonCallback);
 	glfwSetCursorPosCallback(ctx.window, cursorPosCallback);
 	glfwSetFramebufferSizeCallback(ctx.window, resizeCallback);
-	//glfwSetScrollCallback(ctx.window, scrollCallback);
-
 
 	// Load OpenGL functions
 	glewExperimental = true;
@@ -437,17 +436,80 @@ int main(void)
 	// Initialize GUI
 	ImGui_ImplGlfwGL3_Init(ctx.window, false /*do not install callbacks*/);
 
+	
 	// Initialize rendering
 	glGenVertexArrays(1, &ctx.defaultVAO);
 	glBindVertexArray(ctx.defaultVAO);
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 	init(ctx);
 
+
+	static bool show_app_main_menu_bar = true;
+	
+
+
 	// Start rendering loop
 	while (!glfwWindowShouldClose(ctx.window)) {
+	
+
 		glfwPollEvents();
-		ctx.elapsed_time = glfwGetTime();
 		ImGui_ImplGlfwGL3_NewFrame();
+		ctx.elapsed_time = glfwGetTime();
+		
+	
+			if (ImGui::BeginMenuBar())
+			{
+				
+				if (ImGui::BeginMenu("suckkka blyat"))
+				{
+					ImGui::MenuItem("shiiit", NULL, &show_app_main_menu_bar);
+					ImGui::EndMenu();
+
+				}
+				ImGui::EndMenuBar();
+			}
+	
+			ImGui::Spacing();
+			if (ImGui::CollapsingHeader("Help"))
+			{
+				
+
+				if (ImGui::TreeNode("Mixed items"))
+				{
+					ImGui::Columns(3, "mixed");
+					ImGui::Separator();
+
+					ImGui::Text("Hello");
+					ImGui::Button("Banana");
+					ImGui::NextColumn();
+
+					ImGui::Text("ImGui");
+					ImGui::Button("Apple");
+					static float foo = 1.0f;
+					ImGui::InputFloat("red", &zoomFactor, 0.05f, 0, 3);
+					ImGui::Text("An extra line here.");
+					ImGui::NextColumn();
+
+					ImGui::Text("Sailor");
+					ImGui::Button("Corniflower");
+					static float bar = 1.0f;
+					ImGui::InputFloat("blue", &bar, 0.05f, 0, 3);
+					ImGui::NextColumn();
+
+					if (ImGui::CollapsingHeader("Category A")) ImGui::Text("Blah blah blah"); ImGui::NextColumn();
+					if (ImGui::CollapsingHeader("Category B")) ImGui::Text("Blah blah blah"); ImGui::NextColumn();
+					if (ImGui::CollapsingHeader("Category C")) ImGui::Text("Blah blah blah"); ImGui::NextColumn();
+					ImGui::Columns(1);
+					ImGui::Separator();
+					ImGui::TreePop();
+				}
+
+
+				
+			}
+		
+		
+	//	ImGui_ImplGlfwGL3_NewFrame();
 		display(ctx);
 		ImGui::Render();
 		glfwSwapBuffers(ctx.window);
