@@ -67,10 +67,51 @@ void main()
 		frag_color = vec4(N,1.0);
 	}
 
-	//frag_color = vec4(1.0);
+	frag_color = vec4(1.0,1.0,1.0,1.0);
 	// Cel shading outline
 	// Bra parametrar för imgui
 	if (dot(V, N) < mix(0.7f, 0.3f, max(0.0, dot(N,L)))){
 		frag_color = vec4(1.0,1.0,1.0,1.0) * vec4(0.0,0.0,0.0,1.0);
 	}
+	// cross-hatching shader
+
+
+
+if (length(result) < 0.85) 
+{
+   // hatch from left top corner to right bottom
+   if (mod(gl_FragCoord.x + gl_FragCoord.y, 10.0) == 0.0) 
+   {
+      frag_color = vec4(0.0, 0.0, 0.0, 1.0);
+   }
+}
+
+if (length(result) < 0.75) 
+{
+   // hatch from right top corner to left boottom
+   if (mod(gl_FragCoord.x - gl_FragCoord.y, 10.0) == 0.0) 
+   {
+      frag_color = vec4(0.0, 0.0, 0.0, 1.0);
+   }
+}
+
+if (length(result) < 0.5) 
+{
+   // hatch from left top to right bottom
+   if (mod(gl_FragCoord.x + gl_FragCoord.y - 5.0, 10.0) == 0.0) 
+   {
+      frag_color = vec4(1.0, 1.0, 1.0, 1.0);
+   }
+}
+
+if (length(result) < 0.25) 
+{
+   // hatch from right top corner to left bottom
+   if (mod(gl_FragCoord.x - gl_FragCoord.y - 5.0, 10.0) == 0.0) 
+   {
+      frag_color = vec4(0.0, 0.0, 0.0, 1.0);
+   }
+}
+
+
 }
