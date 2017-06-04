@@ -195,7 +195,7 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 	// Define uniforms
 	glm::mat4 model = trackballGetRotationMatrix(ctx.trackball);
 	glm::mat4 view = glm::lookAt(glm::vec3(0, 0, 8), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)); // glm::mat4();
-	glm::mat4 projection = glm::perspective(glm::radians(30.0f)*zoomFactor, 1.0f, 0.1f, 150.0f); //glm::ortho(-ctx.aspect, ctx.aspect, -1.0f, 1.0f, -1.0f, 1.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(30.0f)*zoomFactor, ctx.aspect, 0.1f, 150.0f); //glm::ortho(-ctx.aspect, ctx.aspect, -1.0f, 1.0f, -1.0f, 1.0f);
 	glm::mat4 mv = view * model;
 	glm::mat4 mvp = projection * mv;
 	// ...
@@ -422,6 +422,8 @@ int main(void)
 	glfwSetMouseButtonCallback(ctx.window, mouseButtonCallback);
 	glfwSetCursorPosCallback(ctx.window, cursorPosCallback);
 	glfwSetFramebufferSizeCallback(ctx.window, resizeCallback);
+	//glfwSetScrollCallback(ctx.window, scrollCallback);
+
 
 	// Load OpenGL functions
 	glewExperimental = true;
