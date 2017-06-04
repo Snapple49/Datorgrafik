@@ -21,7 +21,9 @@ in vec3 shader_switch;
 in float showNormalsAsRgb;
 in float useGammaCorrection;
 
-uniform samplerCube u_cubemap;
+//uniform samplerCube u_cubemap;
+
+uniform sampler2D u_texture;
 
 void main()
 {
@@ -113,5 +115,5 @@ if (length(result) < 0.25)
    }
 }
 
-
+	//frag_color = texture(u_texture, vec2(0,0));
 }

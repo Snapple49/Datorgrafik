@@ -29,6 +29,8 @@ out float useGammaCorrection;
 //out vec3 viewPos;
 out vec3 fragPos;
 
+uniform sampler2D u_texture;
+
 void main()
 {
     v_normal = a_normal;
@@ -67,4 +69,5 @@ void main()
 
 	// Set the surface color
 	v_color = vec3(0.7, 0.7, 0.7);
+	//v_color.rgb = texture(u_texture, vec2(0,0)).rgb;
 }

@@ -5,6 +5,7 @@
 
 #include "utils.h"
 #include "utils2.h"
+#include "stb_image.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -200,15 +201,33 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 	glm::mat4 mvp = projection * mv;
 	// ...
 
+	// Load texture
+	int width, height, nrChannels;
+	unsigned char *data = stbi_load("/model_viewer/textures/test128_1b.png", &width, &height, &nrChannels, 0);
+
+	unsigned int texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glUniform1i(glGetUniformLocation(ctx.program, "u_texture"), 0);
+
+	stbi_image_free(data);
+
+	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	//glEnableVertexAttribArray(2);
+
 	// Activate program
 	glUseProgram(program);
 
 	// Bind textures
 	// ...
 	//ctx.activeTexture = GL_TEXTURE0;
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, harambe); // ctx.cubemap
-	glUniform1i(glGetUniformLocation(ctx.program, "u_cubemap"), 0);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, harambe); // ctx.cubemap
+	//glUniform1i(glGetUniformLocation(ctx.program, "u_cubemap"), 0);
 
 	// light
 	glm::vec3 light_position = glm::vec3(1.0f, 1.0f, -1.0f);
