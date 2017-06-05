@@ -117,14 +117,14 @@ std::string cubemapDir(void)
 }
 
 // Returns the absolute path to the texture directory
-std::string textureDir(void)
+std::string textureDir(std::string name)
 {
 	std::string rootDir = getEnvVar("ASSIGNMENT3_ROOT");
 	if (rootDir.empty()) {
 		std::cout << "Error: ASSIGNMENT3_ROOT is not set." << std::endl;
 		std::exit(EXIT_FAILURE);
 	}
-	return rootDir + "/model_viewer/textures/";
+	return rootDir + "/model_viewer/textures/" + name;
 }
 
 void loadMesh(const std::string &filename, Mesh *mesh)
@@ -217,7 +217,7 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 
 	// Load texture
 	int width, height, nrChannels;
-	unsigned char *data = stbi_load((textureDir() + "test128_5.png").c_str(), &width, &height, &nrChannels, 0);
+	unsigned char *data = stbi_load((textureDir("test128_5.png")).c_str(), &width, &height, &nrChannels, 0);
 
 	unsigned int texture;
 	glGenTextures(1, &texture);
