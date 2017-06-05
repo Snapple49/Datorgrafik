@@ -27,6 +27,7 @@ GLboolean bUseGammaCorrection = true;
 float zoomFactor = 1.0;
 float toonShading_a = 0.7f;
 float toonShading_b = 0.3f;
+float crossHatch_variable = 0.0f;
 std::vector<GLuint> asdf = {};
 GLuint harambe;
 
@@ -276,6 +277,7 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 	glUniform1f(glGetUniformLocation(program, "u_time"), ctx.elapsed_time);
 	glUniform1f(glGetUniformLocation(program, "u_toonA"), toonShading_a);
 	glUniform1f(glGetUniformLocation(program, "u_toonB"), toonShading_b);
+	glUniform1f(glGetUniformLocation(program, "u_crossH"), crossHatch_variable);
 	// ...
 
 	// Draw!
@@ -518,12 +520,12 @@ int main(void)
 
 
 					ImGui::Text("ToonAdjust_a");
-					ImGui::SliderFloat("Wrap width2", &toonShading_a, -1, 10, "%.1f");
+					ImGui::SliderFloat("Wrap width2", &toonShading_a, -1, 10, "%.3f");
 					ImGui::NextColumn();
 
 					ImGui::Text("ToonAdjust_b");
 					static float bar = 1.0f;
-					ImGui::SliderFloat("Wrap width", &toonShading_b, -10, 2, "%.1f");
+					ImGui::SliderFloat("Wrap width", &toonShading_b, -10, 2, "%.3f");
 					ImGui::NextColumn();
 				
 					ImGui::Separator();
@@ -539,7 +541,14 @@ int main(void)
 
 					//zoom
 					ImGui::Text("ZOOM");
-					ImGui::InputFloat("blue", &zoomFactor, 0.05f, 0, 3);
+					ImGui::SliderFloat("zoom", &zoomFactor, 0.1f, 2, "%.3f");
+					ImGui::NextColumn();
+					ImGui::Separator();
+
+
+					//crossH
+					ImGui::Text("CROSSHATCH");
+					ImGui::SliderFloat("cross", &crossHatch_variable, 0.0f, 0.5f, "%.3f");
 					ImGui::NextColumn();
 					ImGui::Separator();
 
