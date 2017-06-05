@@ -69,6 +69,11 @@ struct Context {
 	GLuint cubemap;
 	float elapsed_time;
 	GLenum activeTexture;
+	//texturestuff
+	unsigned char* data[6];
+	int tex_height[6];
+	int tex_width[6];
+	int nr_channels[6];
 };
 
 // Returns the value of an environment variable
@@ -191,8 +196,11 @@ void init(Context &ctx)
 
 	// Load cubemap texture(s)
 	// ...
-	
-
+	int width, height, nrChannels;
+	for (size_t i = 0; i < 6; i++)
+	{
+		ctx.data[i] = stbi_load((textureDir("test128_" + std::to_string(i) + ".png")).c_str(), &ctx.tex_width[i], &ctx.tex_height[i], &ctx.nr_channels[i], 0);
+	}
 	initializeTrackball(ctx);
 }
 
@@ -208,21 +216,17 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 	// ...
 
 	// Load texture
-
-	int width, height, nrChannels;
-	unsigned char* data;
 	GLuint textures[6];
 	int i = 0;
 	for each (GLuint texture in textures)
 	{
-		data = stbi_load((textureDir("test128_"+std::to_string(i)+".png")).c_str(), &width, &height, &nrChannels, 0);
 		glGenTextures(1, &texture);
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		if (data) {
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		if (ctx.data[i]) {
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ctx.tex_width[i], ctx.tex_height[i], 0, GL_RGB, GL_UNSIGNED_BYTE, ctx.data[i]);
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}
 		else {
@@ -231,7 +235,6 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 		}
 		glUniform1i(glGetUniformLocation(ctx.program, ("u_texture_" + std::to_string(i)).c_str()), i);
 		i++;
-		stbi_image_free(data);
 	}
 	
 
