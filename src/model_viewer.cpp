@@ -186,20 +186,12 @@ void init(Context &ctx)
 	ctx.program = loadShaderProgram(shaderDir() + "mesh.vert",
 		shaderDir() + "mesh.frag");
 
-	loadMesh((modelDir() + "bunny.obj"), &ctx.mesh);
+	loadMesh((modelDir() + "icosphere.obj"), &ctx.mesh);
 	createMeshVAO(ctx, ctx.mesh, &ctx.meshVAO);
 
 	// Load cubemap texture(s)
 	// ...
-	asdf.push_back(loadCubemap(cubemapDir() + "/Forrest/prefiltered/0.5/"));
-	asdf.push_back(loadCubemap(cubemapDir() + "/Forrest/prefiltered/0.125/"));
-	asdf.push_back(loadCubemap(cubemapDir() + "/Forrest/prefiltered/2/"));
-	asdf.push_back(loadCubemap(cubemapDir() + "/Forrest/prefiltered/8/"));
-	asdf.push_back(loadCubemap(cubemapDir() + "/Forrest/prefiltered/32/"));
-	asdf.push_back(loadCubemap(cubemapDir() + "/Forrest/prefiltered/128/"));
-	asdf.push_back(loadCubemap(cubemapDir() + "/Forrest/prefiltered/512/"));
-	asdf.push_back(loadCubemap(cubemapDir() + "/Forrest/prefiltered/2048/"));
-	asdf.push_back(loadCubemap(cubemapDir() + "/Forrest/"));
+	
 
 	initializeTrackball(ctx);
 }
@@ -216,27 +208,32 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 	// ...
 
 	// Load texture
+
 	int width, height, nrChannels;
-	unsigned char *data = stbi_load((textureDir("test128_5.png")).c_str(), &width, &height, &nrChannels, 0);
-
-	unsigned int texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
+	unsigned char* data;
+	GLuint textures[6];
+	int i = 0;
+	for each (GLuint texture in textures)
+	{
+		data = stbi_load((textureDir("test128_"+std::to_string(i)+".png")).c_str(), &width, &height, &nrChannels, 0);
+		glGenTextures(1, &texture);
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		if (data) {
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+		else {
+			std::cout << "Failed to load texture" << std::endl;
+			// stbi_failure_reason()
+		}
+		glUniform1i(glGetUniformLocation(ctx.program, ("u_texture_" + std::to_string(i)).c_str()), i);
+		i++;
+		stbi_image_free(data);
 	}
-	else {
-		std::cout << "Failed to load texture" << std::endl;
-		// stbi_failure_reason()
-	}
-
-	glUniform1i(glGetUniformLocation(ctx.program, "u_texture"), 0);
-
-	stbi_image_free(data);
+	
 
 	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	//glEnableVertexAttribArray(2);
