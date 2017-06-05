@@ -7,7 +7,8 @@ layout(location = 1) in vec3 a_normal;
 
 out vec3 v_normal;
 uniform mat4 u_mvp;
-
+out vec4 gl_Position;
+out vec4 v_position;
 
 uniform mat4 u_mv;
 uniform mat4 u_v;
@@ -51,6 +52,7 @@ void main()
 	//gl_Position = u_mvp * cPos;
 
 	gl_Position = u_mvp * a_position;
+	v_position = a_position;
 
 	//viewPos = u_v;
 

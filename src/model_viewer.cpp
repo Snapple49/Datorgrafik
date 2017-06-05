@@ -185,7 +185,7 @@ void init(Context &ctx)
 	ctx.program = loadShaderProgram(shaderDir() + "mesh.vert",
 		shaderDir() + "mesh.frag");
 
-	loadMesh((modelDir() + "gargo.obj"), &ctx.mesh);
+	loadMesh((modelDir() + "bunny.obj"), &ctx.mesh);
 	createMeshVAO(ctx, ctx.mesh, &ctx.meshVAO);
 
 	// Load cubemap texture(s)
@@ -221,6 +221,8 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 	unsigned int texture;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	if (data) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);

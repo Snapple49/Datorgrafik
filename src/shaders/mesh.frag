@@ -3,6 +3,7 @@
 
 in vec3 v_normal;
 in vec3 v_color;
+in vec4 v_position;
 
 out vec4 frag_color;
 
@@ -33,9 +34,6 @@ void main()
     //vec3 N = normalize(v_normal);
     //frag_color = vec4(0.5 * N + 0.5, 1.0);
 
-
-
-	
 	// Ambient
 	ambient_color = vec3(0.1, 0.0, 0.0);
 
@@ -72,15 +70,32 @@ void main()
 		frag_color = vec4(N,1.0);
 	}
 
-	frag_color = vec4(1.0,1.0,1.0,1.0);
+	frag_color = vec4(1.0,0.1,0.3,1.0);
+	
+
+
+	//tonal shading
+	if(diffuse < 0.2){
+	}else if(diffuse < 0.2){
+		frag_color = vec4(0.5, 0.1, 0.0 ,1.0);
+	}else if(diffuse < 0.4){
+		frag_color = vec4(0.5, 1.0, 0.3 ,1.0);
+	}else if(diffuse < 0.6){
+		frag_color = vec4(0.7, 0.7, 0 ,1.0);
+	}else if(diffuse < 0.8){
+		frag_color = vec4(0, 0, 0.9 ,1.0);
+	}
+	
 	// Cel shading outline
 	// Bra parametrar för imgui
 	if (dot(V, N) < mix(toonA, toonB, max(0.0, dot(N,L)))){
 		frag_color = vec4(1.0,1.0,1.0,1.0) * vec4(0.0,0.0,0.0,1.0);
 	}
+	
+	
 	// cross-hatching shader
 
-
+	
 
 if (length(result) < 0.85) 
 {
@@ -118,6 +133,7 @@ if (length(result) < 0.25)
    }
 }
 
-	//frag_color = texture(u_texture, vec2(0.2,0));
 	//frag_color.rgb = v_color.rgb;
+			frag_color = texture(u_texture, v_position.xy);
+
 }
