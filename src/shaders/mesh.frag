@@ -21,9 +21,11 @@ vec3 specular_color;
 in vec3 shader_switch;
 in float showNormalsAsRgb;
 in float useGammaCorrection;
+
 //gui-related
 in float toonA;
 in float toonB;
+in float crossH;
 
 //uniform samplerCube u_cubemap;
 
@@ -97,7 +99,7 @@ void main()
 
 	
 
-if (length(result) < 0.85) 
+if ( crossH +length(result) < 0.85) /*length(result)*/
 {
    // hatch from left top corner to right bottom
    if (mod(gl_FragCoord.x + gl_FragCoord.y, 10.0) == 0.0) 
@@ -106,7 +108,7 @@ if (length(result) < 0.85)
    }
 }
 
-if (length(result) < 0.75) 
+if ( crossH +length(result)< 0.75) /*length(result)*/
 {
    // hatch from right top corner to left boottom
    if (mod(gl_FragCoord.x - gl_FragCoord.y, 10.0) == 0.0) 
@@ -115,7 +117,7 @@ if (length(result) < 0.75)
    }
 }
 
-if (length(result) < 0.5) 
+if ( crossH +length(result)< 0.5) /*length(result)*/
 {
    // hatch from left top to right bottom
    if (mod(gl_FragCoord.x + gl_FragCoord.y - 5.0, 10.0) == 0.0) 
@@ -124,7 +126,7 @@ if (length(result) < 0.5)
    }
 }
 
-if (length(result) < 0.25) 
+if ( crossH +length(result)< 0.25) /*length(result)*/
 {
    // hatch from right top corner to left bottom
    if (mod(gl_FragCoord.x - gl_FragCoord.y - 5.0, 10.0) == 0.0) 

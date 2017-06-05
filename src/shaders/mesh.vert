@@ -30,8 +30,10 @@ out float useGammaCorrection;
 //gui-related
 uniform float u_toonA;
 uniform float u_toonB;
+uniform float u_crossH;
 out float toonA;
 out float toonB;
+out float crossH;
 
 //out vec3 viewPos;
 out vec3 fragPos;
@@ -43,6 +45,7 @@ void main()
     //gui-related
 	 toonA = u_toonA;
 	 toonB = u_toonB;
+	 crossH = u_crossH;
 
     v_normal = a_normal;
 
