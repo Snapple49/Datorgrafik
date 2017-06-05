@@ -530,8 +530,8 @@ int main(void)
 					ImGui::Text("LIGHT");
 					
 					//Light-gui
-					static bool c1 = false, c2 = false, c3 = false;
-					int n1 = 0, n2 = 0, n3 = 0;
+					static bool c1 = false, c2 = false, c3 = false, n1 = true, n2 = true, n3 = true;
+					
 					ImGui::Checkbox("Diffuse", &c1);
 					ImGui::Checkbox("Ambient", &c2);
 					ImGui::Checkbox("Specular", &c3);
@@ -544,38 +544,59 @@ int main(void)
 					ImGui::Separator();
 
 
-
-					if (c1 && n1==0)
+			//checks if we want to change the x
+					if (c1 && n1)
 					{
-						n1 = 1;
+						n1 = false;
 						if (shader_switch.x == 0.0) {
 							shader_switch.x = 1.0;
 						}
 						else shader_switch.x = 0.0;
-					}else if (!c1 && n1 == 1) {
-						n1 = 0;
 					}
-
-					if (c2 && n2==0)
+					
+					else if (!c1 && !n1) {
+						
+						if (shader_switch.x == 0.0) {
+							shader_switch.x = 1.0;
+						}else shader_switch.x = 0.0;
+						
+						n1 = true;
+					}
+			//checks if we want to change the y
+					if (c2 && n2)
 					{
-						n2 = 1;
+						n2 = false;
 						if (shader_switch.y == 0.0) {
 							shader_switch.y = 1.0;
 						}
 						else shader_switch.y = 0.0;
-					}else if (!c2 && n2 == 1) {
-						n2 = 0;
 					}
-
-					if (c3 && n3==0)
+					
+					else if (!c2 && !n2) {
+						
+						if (shader_switch.y == 0.0) {
+							shader_switch.y = 1.0;
+						}else shader_switch.y = 0.0;
+						
+						n2 = true;
+					}
+					
+			//checks if we want to change the z
+					if (c3 && n3)
 					{
-						n3 = 1;
+						n3 = false;
 						if (shader_switch.z == 0.0) {
 							shader_switch.z = 1.0;
-						}
-						else shader_switch.z = 0.0;
-					}else if (!c3 && n3 == 1) {
-						n3 = 0;
+						}else shader_switch.z = 0.0;
+					}
+					
+					else if (!c3 && !n3) {
+
+						if (shader_switch.z == 0.0) {
+							shader_switch.z = 1.0;
+						}else shader_switch.z = 0.0;
+
+						n3 = true;
 					}
 					
 

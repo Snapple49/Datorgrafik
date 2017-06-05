@@ -118,6 +118,6 @@ if (length(result) < 0.25)
    }
 }
 
-	frag_color = texture(u_texture, vec2(0.2,0));
+	//frag_color = texture(u_texture, vec2(0.2,0));
 	//frag_color.rgb = v_color.rgb;
 }
