@@ -201,7 +201,7 @@ void init(Context &ctx)
 	int width, height, nrChannels;
 	for (size_t i = 0; i < 6; i++)
 	{
-		ctx.data[i] = stbi_load((textureDir("test128_" + std::to_string(i) + ".png")).c_str(), &ctx.tex_width[i], &ctx.tex_height[i], &ctx.nr_channels[i], 0);
+		ctx.data[i] = stbi_load((textureDir("test32_" + std::to_string(i) + ".png")).c_str(), &ctx.tex_width[i], &ctx.tex_height[i], &ctx.nr_channels[i], 0);
 		if (ctx.data[i]) {
 			glGenTextures(1, &textures[i]);
 			glBindTexture(GL_TEXTURE_2D, textures[i]);
