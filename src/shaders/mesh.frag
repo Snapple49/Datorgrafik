@@ -14,8 +14,6 @@ vec3 diffuse_color;
 vec3 specular_color;
 
 in vec3 shader_switch;
-uniform float u_showNormalsAsRgb;
-uniform float u_useGammaCorrection;
 
 // GUI-related
 in float toonA;
@@ -49,17 +47,8 @@ void main()
 	vec3 result = ambient_color*shader_switch.x + diffuse_color*shader_switch.y + specular_color*shader_switch.z;
 
 	// Gamma correction
-	if(u_useGammaCorrection > 0.5){
-		float gamma = 2.2;
-		result.rgb = pow(result.rgb, vec3(1.0/gamma));
-	}
-
-	if(u_showNormalsAsRgb < 0.5){
-		frag_color = vec4(result, 1.0);
-	} else {
-		frag_color = vec4(N,1.0);
-	}
-
+	float gamma = 2.2;
+	result.rgb = pow(result.rgb, vec3(1.0/gamma));
 
 	// UV-mapping
 	vec4 norm_pos = normalize(v_position);

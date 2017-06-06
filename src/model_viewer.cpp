@@ -30,7 +30,6 @@ float toonShading_a = 0.7f;
 float toonShading_b = 0.3f;
 float crossHatch_variable = 0.0f;
 std::vector<GLuint> asdf = {};
-GLuint harambe;
 
 // The attribute locations we will use in the vertex shader
 enum AttributeLocation {
@@ -248,10 +247,6 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glUniform1i(glGetUniformLocation(ctx.program, ("u_texture_" + std::to_string(i)).c_str()), i);
 	}
-	//ctx.activeTexture = GL_TEXTURE0;
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_CUBE_MAP, harambe); // ctx.cubemap
-	//glUniform1i(glGetUniformLocation(ctx.program, "u_cubemap"), 0);
 
 	// light
 	glm::vec3 light_position = glm::vec3(1.0f, 1.0f, -1.0f);
@@ -363,45 +358,6 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 			shader_switch.z = 1.0;
 		}
 		else shader_switch.z = 0.0;
-	}
-	else if (key == GLFW_KEY_F && action == GLFW_PRESS) {
-		bShowNormalsAsRgb = !bShowNormalsAsRgb;
-	}
-	else if (key == GLFW_KEY_G && action == GLFW_PRESS) {
-		bUseGammaCorrection = !bUseGammaCorrection;
-	}
-	else if (key == GLFW_KEY_I && action == GLFW_PRESS) {
-		zoomFactor += 0.1;
-	}
-	else if (key == GLFW_KEY_K && action == GLFW_PRESS) {
-		zoomFactor -= 0.1;
-	}
-	else if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-		harambe = asdf.at(0);
-	}
-	else if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-		harambe = asdf.at(1);
-	}
-	else if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
-		harambe = asdf.at(2);
-	}
-	else if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
-		harambe = asdf.at(3);
-	}
-	else if (key == GLFW_KEY_5 && action == GLFW_PRESS) {
-		harambe = asdf.at(4);
-	}
-	else if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
-		harambe = asdf.at(5);
-	}
-	else if (key == GLFW_KEY_7 && action == GLFW_PRESS) {
-		harambe = asdf.at(6);
-	}
-	else if (key == GLFW_KEY_8 && action == GLFW_PRESS) {
-		harambe = asdf.at(7);
-	}
-	else if (key == GLFW_KEY_9 && action == GLFW_PRESS) {
-		harambe = asdf.at(8);
 	}
 }
 
