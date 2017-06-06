@@ -22,6 +22,7 @@
 #include <algorithm>
 
 glm::vec3 shader_switch = glm::vec3(1.0, 1.0, 1.0);
+glm::vec3 stroke_color = glm::vec3(1.0);
 GLboolean bShowNormalsAsRgb = false;
 GLboolean bUseGammaCorrection = true;
 float zoomFactor = 1.0;
@@ -253,6 +254,8 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 	glUniform3fv(glGetUniformLocation(ctx.program, "u_light_color"), 1, &light_color[0]);
 
 	glUniform3fv(glGetUniformLocation(ctx.program, "u_shader_switch"), 1, &shader_switch[0]);
+	glUniform3fv(glGetUniformLocation(ctx.program, "u_stroke_color"), 1, &stroke_color[0]);
+
 	if (bShowNormalsAsRgb) {
 		glUniform1f(glGetUniformLocation(ctx.program, "u_showNormalsAsRgb"), 1.0);
 	}
@@ -468,9 +471,6 @@ int main(void)
 		static float bar = 1.0f;
 		ImGui::SliderFloat("Wrap width", &toonShading_b, -2.0, 1.0, "%.3f");
 		ImGui::NextColumn();
-				
-		ImGui::Separator();
-		ImGui::Text("LIGHT");
 					
 		//zoom
 		ImGui::Text("ZOOM");
@@ -487,7 +487,13 @@ int main(void)
 		ImGui::NextColumn();
 		ImGui::Separator();
 
-		
+		//Stroke color
+		ImGui::Text("STROKE COLOR");
+		ImGui::SliderFloat("Red", &stroke_color.r, 0.0f, 1.0f, "%.2f");
+		ImGui::SliderFloat("Green", &stroke_color.g, 0.0f, 1.0f, "%.2f");
+		ImGui::SliderFloat("Blue", &stroke_color.b, 0.0f, 1.0f, "%.2f");
+		ImGui::NextColumn();
+		ImGui::Separator();
 
 		//ImGui_ImplGlfwGL3_NewFrame();
 		display(ctx);
