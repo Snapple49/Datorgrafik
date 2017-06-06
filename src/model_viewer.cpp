@@ -186,6 +186,8 @@ void initializeTrackball(Context &ctx)
 	ctx.trackball.center = center;
 }
 
+GLuint textures[6];
+
 void init(Context &ctx)
 {
 	ctx.program = loadShaderProgram(shaderDir() + "mesh.vert",
@@ -199,8 +201,19 @@ void init(Context &ctx)
 	int width, height, nrChannels;
 	for (size_t i = 0; i < 6; i++)
 	{
-		ctx.data[i] = stbi_load((textureDir("test128_" + std::to_string(i) + ".png")).c_str(), &ctx.tex_width[i], &ctx.tex_height[i], &ctx.nr_channels[i], 0);
+		ctx.data[i] = stbi_load((textureDir("test32_" + std::to_string(i) + ".png")).c_str(), &ctx.tex_width[i], &ctx.tex_height[i], &ctx.nr_channels[i], 0);
+		if (ctx.data[i]) {
+			glGenTextures(1, &textures[i]);
+			glBindTexture(GL_TEXTURE_2D, textures[i]);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ctx.tex_width[i], ctx.tex_height[i], 0, GL_RGB, GL_UNSIGNED_BYTE, ctx.data[i]);
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+		else {
+			std::cout << "Failed to load texture" << std::endl;
+			// stbi_failure_reason()
+		}
 	}
+	
 	initializeTrackball(ctx);
 }
 
@@ -216,26 +229,7 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 	// ...
 
 	// Load texture
-	GLuint textures[6];
-	int i = 0;
-	for each (GLuint texture in textures)
-	{
-		glGenTextures(1, &texture);
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, texture);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		if (ctx.data[i]) {
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ctx.tex_width[i], ctx.tex_height[i], 0, GL_RGB, GL_UNSIGNED_BYTE, ctx.data[i]);
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-		else {
-			std::cout << "Failed to load texture" << std::endl;
-			// stbi_failure_reason()
-		}
-		glUniform1i(glGetUniformLocation(ctx.program, ("u_texture_" + std::to_string(i)).c_str()), i);
-		i++;
-	}
+	
 	
 
 	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
@@ -246,6 +240,13 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 
 	// Bind textures
 	// ...
+	for (int i = 0; i < 6; i++) {
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, textures[i]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glUniform1i(glGetUniformLocation(ctx.program, ("u_texture_" + std::to_string(i)).c_str()), i);
+	}
 	//ctx.activeTexture = GL_TEXTURE0;
 	//glActiveTexture(GL_TEXTURE0);
 	//glBindTexture(GL_TEXTURE_CUBE_MAP, harambe); // ctx.cubemap

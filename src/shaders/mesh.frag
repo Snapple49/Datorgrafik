@@ -42,6 +42,7 @@ void main()
     //frag_color = vec4(0.5 * N + 0.5, 1.0);
 
 	// Ambient
+	float ambient = 0.1;
 	ambient_color = vec3(0.1, 0.0, 0.0);
 
 	// Diffuse
@@ -64,6 +65,7 @@ void main()
 
 	vec3 result = ambient_color*shader_switch.x + diffuse_color*shader_switch.y + specular_color*shader_switch.z;
 	//result *= v_color;
+	
 
 	// Gamma correction
 	if(useGammaCorrection > 0.5){
@@ -77,76 +79,43 @@ void main()
 		frag_color = vec4(N,1.0);
 	}
 
-	frag_color = vec4(1.0,0.1,0.3,1.0);
-	
 
+	//UV-mapping
+	vec4 norm_pos = normalize(v_position);
+	float u = 0.5 + atan(norm_pos.z, norm_pos.x)/(2*3.14);
+	float v = 0.5 - asin(norm_pos.y)/3.14;
 
-	//tonal shading
-	if(diffuse < 0.2){
-		frag_color = texture(u_texture_5, v_position.xy);
-	}else if(diffuse < 0.3){
-		//frag_color = vec4(0.5, 0.1, 0.0 ,1.0);
-		frag_color = texture(u_texture_4, v_position.xy);
-	}else if(diffuse < 0.5){
-		//frag_color = vec4(0.5, 1.0, 0.3 ,1.0);
-		frag_color = texture(u_texture_3, v_position.xy);
-	}else if(diffuse < 0.8){
-		frag_color = texture(u_texture_2, v_position.xy);
-		//frag_color = vec4(0.7, 0.7, 0 ,1.0);
-	}else if(diffuse < 0.9){
-		frag_color = texture(u_texture_1, v_position.xy);
-		//frag_color = vec4(0, 0, 0.9 ,1.0);
+	//scale texture
+	v*=16;
+	u*=16;
+	vec2 uv = vec2(u,v);
+
+	// cross-hatching shader
+	float step = 1.0/5.0;
+	float shade = ambient*shader_switch.x + diffuse*shader_switch.y + specular*shader_switch.z;
+
+	if(shade < step){
+		frag_color = mix(texture(u_texture_5, uv), texture(u_texture_4, uv), 5*(shade));
+	}else if(shade < step*2){
+		frag_color = mix(texture(u_texture_4, uv), texture(u_texture_3, uv), 5*(shade-step));
+	}else if(shade < step*3){
+		frag_color = mix(texture(u_texture_3, uv), texture(u_texture_2, uv), 5*(shade-2*step));
+	}else if(shade < step*4){
+		frag_color = mix(texture(u_texture_2, uv), texture(u_texture_1, uv), 5*(shade-3*step));
 	}else{
-		frag_color = texture(u_texture_0, v_position.xy);
+		frag_color = mix(texture(u_texture_1, uv), texture(u_texture_0, uv), 5*(shade-4*step));
 	}
 	
 	// Cel shading outline
 	// Bra parametrar för imgui
+	/*
 	if (dot(V, N) < mix(toonA, toonB, max(0.0, dot(N,L)))){
 		frag_color = vec4(1.0,1.0,1.0,1.0) * vec4(0.0,0.0,0.0,1.0);
-	}
-	
-	
-	// cross-hatching shader
+	}*/
 
 	
+	
 
-if ( crossH +length(result) < 0.85) /*length(result)*/
-{
-   // hatch from left top corner to right bottom
-   if (mod(gl_FragCoord.x + gl_FragCoord.y, 10.0) == 0.0) 
-   {
-      frag_color = vec4(0.0, 0.0, 0.0, 1.0);
-   }
-}
-
-if ( crossH +length(result)< 0.75) /*length(result)*/
-{
-   // hatch from right top corner to left boottom
-   if (mod(gl_FragCoord.x - gl_FragCoord.y, 10.0) == 0.0) 
-   {
-      frag_color = vec4(0.0, 0.0, 0.0, 1.0);
-   }
-}
-
-if ( crossH +length(result)< 0.5) /*length(result)*/
-{
-   // hatch from left top to right bottom
-   if (mod(gl_FragCoord.x + gl_FragCoord.y - 5.0, 10.0) == 0.0) 
-   {
-      frag_color = vec4(1.0, 1.0, 1.0, 1.0);
-   }
-}
-
-if ( crossH +length(result)< 0.25) /*length(result)*/
-{
-   // hatch from right top corner to left bottom
-   if (mod(gl_FragCoord.x - gl_FragCoord.y - 5.0, 10.0) == 0.0) 
-   {
-      frag_color = vec4(0.0, 0.0, 0.0, 1.0);
-   }
-}
-
-	//frag_color.rgb = v_color.rgb;
+	//frag_color.rgb = result.rgb;
 
 }
