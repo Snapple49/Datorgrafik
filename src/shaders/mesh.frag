@@ -42,6 +42,7 @@ void main()
     //frag_color = vec4(0.5 * N + 0.5, 1.0);
 
 	// Ambient
+	float ambient = 1.0;
 	ambient_color = vec3(0.1, 0.0, 0.0);
 
 	// Diffuse
@@ -64,6 +65,7 @@ void main()
 
 	vec3 result = ambient_color*shader_switch.x + diffuse_color*shader_switch.y + specular_color*shader_switch.z;
 	//result *= v_color;
+	
 
 	// Gamma correction
 	if(useGammaCorrection > 0.5){
@@ -88,11 +90,13 @@ void main()
 	v*=8;
 	u*=8;
 	vec2 uv = vec2(u,v);
+
 	// cross-hatching shader
 	float step = 1/5;
+	float shade = ambient*shader_switch.x + diffuse*shader_switch.y + specular*shader_switch.z;
 
 	if(diffuse < 0.2){
-		frag_color = texture(u_texture_5, vec2(u,v));
+		frag_color = mix(texture(u_texture_5, uv), texture(u_texture_4, uv), 5*(shade));
 	}else if(diffuse < 0.3){
 		frag_color = texture(u_texture_4, vec2(u,v));
 	}else if(diffuse < 0.5){
