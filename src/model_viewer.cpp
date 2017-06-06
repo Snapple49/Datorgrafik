@@ -517,14 +517,6 @@ int main(void)
 		ImGui::Separator();
 		ImGui::Text("LIGHT");
 					
-		//Light-gui
-		static bool c1 = false, c2 = false, c3 = false, n1 = true, n2 = true, n3 = true;
-					
-		ImGui::Checkbox("Diffuse", &c1);
-		ImGui::Checkbox("Ambient", &c2);
-		ImGui::Checkbox("Specular", &c3);
-		ImGui::NextColumn();
-
 		//zoom
 		ImGui::Text("ZOOM");
 		ImGui::SliderFloat("zoom", &zoomFactor, 0.1f, 2, "%.3f");
@@ -532,76 +524,17 @@ int main(void)
 		ImGui::Separator();
 
 
-		//crossH
-		ImGui::Text("LIGHT WEIGHTS");
-		ImGui::SliderFloat("Ambient", &shader_switch.x, 0.0f, 1.0f, "%.2f");
-		ImGui::SliderFloat("Diffuse", &shader_switch.y, 0.0f, 1.0f, "%.2f");
+		//Light controls
+		ImGui::Text("LIGHT");
+		ImGui::SliderFloat("Diffuse", &shader_switch.x, 0.0f, 1.0f, "%.2f");
+		ImGui::SliderFloat("Ambient", &shader_switch.y, 0.0f, 1.0f, "%.2f");
 		ImGui::SliderFloat("Specular", &shader_switch.z, 0.0f, 1.0f, "%.2f");
 		ImGui::NextColumn();
 		ImGui::Separator();
 
-
-//checks if we want to change the x
-		if (c1 && n1)
-		{
-			n1 = false;
-			if (shader_switch.x == 0.0) {
-				shader_switch.x = 1.0;
-			}
-			else shader_switch.x = 0.0;
-		}
-					
-		else if (!c1 && !n1) {
-						
-			if (shader_switch.x == 0.0) {
-				shader_switch.x = 1.0;
-			}else shader_switch.x = 0.0;
-						
-			n1 = true;
-		}
-//checks if we want to change the y
-		if (c2 && n2)
-		{
-			n2 = false;
-			if (shader_switch.y == 0.0) {
-				shader_switch.y = 1.0;
-			}
-			else shader_switch.y = 0.0;
-		}
-					
-		else if (!c2 && !n2) {
-						
-			if (shader_switch.y == 0.0) {
-				shader_switch.y = 1.0;
-			}else shader_switch.y = 0.0;
-						
-			n2 = true;
-		}
-					
-//checks if we want to change the z
-		if (c3 && n3)
-		{
-			n3 = false;
-			if (shader_switch.z == 0.0) {
-				shader_switch.z = 1.0;
-			}else shader_switch.z = 0.0;
-		}
-					
-		else if (!c3 && !n3) {
-
-			if (shader_switch.z == 0.0) {
-				shader_switch.z = 1.0;
-			}else shader_switch.z = 0.0;
-
-			n3 = true;
-		}
-					
-
-
-			
 		
-		
-	//	ImGui_ImplGlfwGL3_NewFrame();
+
+		//ImGui_ImplGlfwGL3_NewFrame();
 		display(ctx);
 		ImGui::Render();
 		glfwSwapBuffers(ctx.window);
