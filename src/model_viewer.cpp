@@ -513,9 +513,6 @@ int main(void)
 		static float bar = 1.0f;
 		ImGui::SliderFloat("Wrap width", &toonShading_b, -2.0, 1.0, "%.3f");
 		ImGui::NextColumn();
-				
-		ImGui::Separator();
-		ImGui::Text("LIGHT");
 					
 		//zoom
 		ImGui::Text("ZOOM");
