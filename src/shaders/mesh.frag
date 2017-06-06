@@ -81,26 +81,25 @@ void main()
 
 	vec4 norm_pos = normalize(v_position);
 
+	//UV-mapping
 	float u = 0.5 + atan(norm_pos.z, norm_pos.x)/(2*3.14);
 	float v = 0.5 - asin(norm_pos.y)/3.14;
 
 	v*=8;
 	u*=8;
+	vec2 uv = vec2(u,v);
 	// cross-hatching shader
-	
+	float step = 1/5;
+
 	if(diffuse < 0.2){
 		frag_color = texture(u_texture_5, vec2(u,v));
 	}else if(diffuse < 0.3){
-		//frag_color = vec4(0.5, 0.1, 0.0 ,1.0);
 		frag_color = texture(u_texture_4, vec2(u,v));
 	}else if(diffuse < 0.5){
-		//frag_color = vec4(0.5, 1.0, 0.3 ,1.0);
 		frag_color = texture(u_texture_3, vec2(u,v));
 	}else if(diffuse < 0.8){
-		//frag_color = vec4(0.7, 0.7, 0 ,1.0);
 		frag_color = texture(u_texture_2, vec2(u,v));
 	}else if(diffuse < 1){
-		//frag_color = vec4(0, 0, 0.9 ,1.0);
 		frag_color = texture(u_texture_1, vec2(u,v));
 	}else{
 		frag_color = texture(u_texture_0, vec2(u,v));
@@ -114,6 +113,6 @@ void main()
 	
 	
 
-	//frag_color.rgb = v_color.rgb;
+	//frag_color.rgb = result.rgb;
 
 }
