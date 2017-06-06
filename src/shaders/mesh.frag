@@ -86,8 +86,8 @@ void main()
 	float v = 0.5 - asin(norm_pos.y)/3.14;
 
 	//scale texture
-	v*=16;
-	u*=16;
+	v*=8;
+	u*=8;
 	vec2 uv = vec2(u,v);
 
 	// cross-hatching shader
