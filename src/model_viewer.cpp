@@ -22,7 +22,7 @@
 #include <algorithm>
 
 glm::vec3 shader_switch = glm::vec3(1.0, 1.0, 1.0);
-glm::vec3 stroke_color = glm::vec3(1.0);
+glm::vec4 stroke_color = glm::vec4(0.0, 0.0, 0.0, 1.0);
 GLboolean bShowNormalsAsRgb = false;
 GLboolean bUseGammaCorrection = true;
 float zoomFactor = 1.0;
@@ -255,30 +255,15 @@ void drawMesh(Context &ctx, GLuint program, const MeshVAO &meshVAO)
 	glUniform3fv(glGetUniformLocation(ctx.program, "u_light_color"), 1, &light_color[0]);
 
 	glUniform3fv(glGetUniformLocation(ctx.program, "u_shader_switch"), 1, &shader_switch[0]);
-	glUniform3fv(glGetUniformLocation(ctx.program, "u_stroke_color"), 1, &stroke_color[0]);
-
-	if (bShowNormalsAsRgb) {
-		glUniform1f(glGetUniformLocation(ctx.program, "u_showNormalsAsRgb"), 1.0);
-	}
-	else {
-		glUniform1f(glGetUniformLocation(ctx.program, "u_showNormalsAsRgb"), 0.0);
-	}
-	if (bUseGammaCorrection) {
-		glUniform1f(glGetUniformLocation(ctx.program, "u_useGammaCorrection"), 1.0);
-	}
-	else {
-		glUniform1f(glGetUniformLocation(ctx.program, "u_useGammaCorrection"), 0.0);
-	}
+	glUniform4fv(glGetUniformLocation(ctx.program, "u_stroke_color"), 1, &stroke_color[0]);
 
 
 	// Pass uniforms
 	glUniformMatrix4fv(glGetUniformLocation(program, "u_v"), 1, GL_FALSE, &view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "u_mv"), 1, GL_FALSE, &mv[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "u_mvp"), 1, GL_FALSE, &mvp[0][0]);
-	glUniform1f(glGetUniformLocation(program, "u_time"), ctx.elapsed_time);
 	glUniform1f(glGetUniformLocation(program, "u_toonA"), toonShading_a);
 	glUniform1f(glGetUniformLocation(program, "u_toonB"), toonShading_b);
-	glUniform1f(glGetUniformLocation(program, "u_crossH"), crossHatch_variable);
 	// ...
 
 	// Draw!

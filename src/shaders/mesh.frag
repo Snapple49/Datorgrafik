@@ -18,7 +18,7 @@ in vec3 shader_switch;
 // GUI-related
 in float toonA;
 in float toonB;
-in float crossH;
+uniform vec4 u_stroke_color;
 
 uniform sampler2D u_texture_0;
 uniform sampler2D u_texture_1;
@@ -79,7 +79,7 @@ void main()
 	}
 	
 	if(frag_color.r < 0.93){
-		//frag_color = mix(frag_color, vec4(0.0, 0.6, 0.0, 1.0), 0.8);
+		frag_color = mix(frag_color, vec4(u_stroke_color.r, u_stroke_color.g, u_stroke_color.b, 1.0), 0.5);
 	}
 
 	// Cel shading outline
