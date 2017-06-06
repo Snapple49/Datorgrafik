@@ -361,12 +361,6 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 		}
 		else shader_switch.z = 0.0;
 	}
-	else if (key == GLFW_KEY_F && action == GLFW_PRESS) {
-		bShowNormalsAsRgb = !bShowNormalsAsRgb;
-	}
-	else if (key == GLFW_KEY_G && action == GLFW_PRESS) {
-		bUseGammaCorrection = !bUseGammaCorrection;
-	}
 	else if (key == GLFW_KEY_I && action == GLFW_PRESS) {
 		zoomFactor += 0.1;
 	}
