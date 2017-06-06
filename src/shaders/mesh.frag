@@ -108,10 +108,10 @@ void main()
 	
 	// Cel shading outline
 	// Bra parametrar för imgui
-	/*
+	
 	if (dot(V, N) < mix(toonA, toonB, max(0.0, dot(N,L)))){
 		frag_color = vec4(1.0,1.0,1.0,1.0) * vec4(0.0,0.0,0.0,1.0);
-	}*/
+	}
 
 	
 	
