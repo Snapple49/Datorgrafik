@@ -78,26 +78,32 @@ void main()
 	}
 
 	frag_color = vec4(1.0,0.1,0.3,1.0);
+
+	vec4 norm_pos = normalize(v_position);
+
+	float u = 0.5 + atan(norm_pos.z, norm_pos.x)/(2*3.14);
+	float v = 0.5 - asin(norm_pos.y)/3.14;
+
+	v*=8;
+	u*=8;
+	// cross-hatching shader
 	
-
-
-	//tonal shading
 	if(diffuse < 0.2){
-		frag_color = texture(u_texture_5, v_position.xy);
+		frag_color = texture(u_texture_5, vec2(u,v));
 	}else if(diffuse < 0.3){
 		//frag_color = vec4(0.5, 0.1, 0.0 ,1.0);
-		frag_color = texture(u_texture_4, v_position.xy);
+		frag_color = texture(u_texture_4, vec2(u,v));
 	}else if(diffuse < 0.5){
 		//frag_color = vec4(0.5, 1.0, 0.3 ,1.0);
-		frag_color = texture(u_texture_3, v_position.xy);
+		frag_color = texture(u_texture_3, vec2(u,v));
 	}else if(diffuse < 0.8){
-		frag_color = texture(u_texture_2, v_position.xy);
 		//frag_color = vec4(0.7, 0.7, 0 ,1.0);
-	}else if(diffuse < 0.9){
-		frag_color = texture(u_texture_1, v_position.xy);
+		frag_color = texture(u_texture_2, vec2(u,v));
+	}else if(diffuse < 1){
 		//frag_color = vec4(0, 0, 0.9 ,1.0);
+		frag_color = texture(u_texture_1, vec2(u,v));
 	}else{
-		frag_color = texture(u_texture_0, v_position.xy);
+		frag_color = texture(u_texture_0, vec2(u,v));
 	}
 	
 	// Cel shading outline
@@ -107,45 +113,6 @@ void main()
 	}
 	
 	
-	// cross-hatching shader
-
-	
-
-if ( crossH +length(result) < 0.85) /*length(result)*/
-{
-   // hatch from left top corner to right bottom
-   if (mod(gl_FragCoord.x + gl_FragCoord.y, 10.0) == 0.0) 
-   {
-      frag_color = vec4(0.0, 0.0, 0.0, 1.0);
-   }
-}
-
-if ( crossH +length(result)< 0.75) /*length(result)*/
-{
-   // hatch from right top corner to left boottom
-   if (mod(gl_FragCoord.x - gl_FragCoord.y, 10.0) == 0.0) 
-   {
-      frag_color = vec4(0.0, 0.0, 0.0, 1.0);
-   }
-}
-
-if ( crossH +length(result)< 0.5) /*length(result)*/
-{
-   // hatch from left top to right bottom
-   if (mod(gl_FragCoord.x + gl_FragCoord.y - 5.0, 10.0) == 0.0) 
-   {
-      frag_color = vec4(1.0, 1.0, 1.0, 1.0);
-   }
-}
-
-if ( crossH +length(result)< 0.25) /*length(result)*/
-{
-   // hatch from right top corner to left bottom
-   if (mod(gl_FragCoord.x - gl_FragCoord.y - 5.0, 10.0) == 0.0) 
-   {
-      frag_color = vec4(0.0, 0.0, 0.0, 1.0);
-   }
-}
 
 	//frag_color.rgb = v_color.rgb;
 
