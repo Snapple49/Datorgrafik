@@ -29,7 +29,6 @@ float zoomFactor = 1.0;
 float toonShading_a = 0.7f;
 float toonShading_b = 0.3f;
 float crossHatch_variable = 0.0f;
-std::vector<GLuint> asdf = {};
 
 // The attribute locations we will use in the vertex shader
 enum AttributeLocation {
