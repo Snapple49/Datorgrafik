@@ -496,121 +496,39 @@ int main(void)
 		ctx.elapsed_time = glfwGetTime();
 		
 	
-			if (ImGui::BeginMenuBar())
-			{
+		ImGui::Spacing();
+		ImGui::Separator();
+
+		ImGui::Text("ToonAdjust_a");
+		ImGui::SliderFloat("Wrap width2", &toonShading_a, 0.2, 3.0, "%.3f");
+		ImGui::NextColumn();
+
+		ImGui::Text("ToonAdjust_b");
+		static float bar = 1.0f;
+		ImGui::SliderFloat("Wrap width", &toonShading_b, -2.0, 1.0, "%.3f");
+		ImGui::NextColumn();
 				
-				if (ImGui::BeginMenu("suckkka blyat"))
-				{
-					ImGui::MenuItem("shiiit", NULL, &show_app_main_menu_bar);
-					ImGui::EndMenu();
-
-				}
-				ImGui::EndMenuBar();
-			}
-	
-			ImGui::Spacing();
-			
-
-				
-					ImGui::Columns(2, "mixed");
-					ImGui::Separator();
-
-
-					ImGui::Text("ToonAdjust_a");
-					ImGui::SliderFloat("Wrap width2", &toonShading_a, -1, 10, "%.3f");
-					ImGui::NextColumn();
-
-					ImGui::Text("ToonAdjust_b");
-					static float bar = 1.0f;
-					ImGui::SliderFloat("Wrap width", &toonShading_b, -10, 2, "%.3f");
-					ImGui::NextColumn();
-				
-					ImGui::Separator();
-					ImGui::Text("LIGHT");
+		ImGui::Separator();
+		ImGui::Text("LIGHT");
 					
-					//Light-gui
-					static bool c1 = false, c2 = false, c3 = false, n1 = true, n2 = true, n3 = true;
-					
-					ImGui::Checkbox("Diffuse", &c1);
-					ImGui::Checkbox("Ambient", &c2);
-					ImGui::Checkbox("Specular", &c3);
-					ImGui::NextColumn();
-
-					//zoom
-					ImGui::Text("ZOOM");
-					ImGui::SliderFloat("zoom", &zoomFactor, 0.1f, 2, "%.3f");
-					ImGui::NextColumn();
-					ImGui::Separator();
+		//zoom
+		ImGui::Text("ZOOM");
+		ImGui::SliderFloat("zoom", &zoomFactor, 0.1f, 2, "%.3f");
+		ImGui::NextColumn();
+		ImGui::Separator();
 
 
-					//crossH
-					ImGui::Text("CROSSHATCH");
-					ImGui::SliderFloat("cross", &crossHatch_variable, 0.0f, 0.5f, "%.3f");
-					ImGui::NextColumn();
-					ImGui::Separator();
+		//Light controls
+		ImGui::Text("LIGHT");
+		ImGui::SliderFloat("Diffuse", &shader_switch.x, 0.0f, 1.0f, "%.2f");
+		ImGui::SliderFloat("Ambient", &shader_switch.y, 0.0f, 1.0f, "%.2f");
+		ImGui::SliderFloat("Specular", &shader_switch.z, 0.0f, 1.0f, "%.2f");
+		ImGui::NextColumn();
+		ImGui::Separator();
 
-
-			//checks if we want to change the x
-					if (c1 && n1)
-					{
-						n1 = false;
-						if (shader_switch.x == 0.0) {
-							shader_switch.x = 1.0;
-						}
-						else shader_switch.x = 0.0;
-					}
-					
-					else if (!c1 && !n1) {
-						
-						if (shader_switch.x == 0.0) {
-							shader_switch.x = 1.0;
-						}else shader_switch.x = 0.0;
-						
-						n1 = true;
-					}
-			//checks if we want to change the y
-					if (c2 && n2)
-					{
-						n2 = false;
-						if (shader_switch.y == 0.0) {
-							shader_switch.y = 1.0;
-						}
-						else shader_switch.y = 0.0;
-					}
-					
-					else if (!c2 && !n2) {
-						
-						if (shader_switch.y == 0.0) {
-							shader_switch.y = 1.0;
-						}else shader_switch.y = 0.0;
-						
-						n2 = true;
-					}
-					
-			//checks if we want to change the z
-					if (c3 && n3)
-					{
-						n3 = false;
-						if (shader_switch.z == 0.0) {
-							shader_switch.z = 1.0;
-						}else shader_switch.z = 0.0;
-					}
-					
-					else if (!c3 && !n3) {
-
-						if (shader_switch.z == 0.0) {
-							shader_switch.z = 1.0;
-						}else shader_switch.z = 0.0;
-
-						n3 = true;
-					}
-					
-
-
-			
 		
-		
-	//	ImGui_ImplGlfwGL3_NewFrame();
+
+		//ImGui_ImplGlfwGL3_NewFrame();
 		display(ctx);
 		ImGui::Render();
 		glfwSwapBuffers(ctx.window);
