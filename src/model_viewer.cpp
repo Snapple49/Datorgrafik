@@ -193,7 +193,7 @@ void init(Context &ctx)
 	ctx.program = loadShaderProgram(shaderDir() + "mesh.vert",
 		shaderDir() + "mesh.frag");
 
-	loadMesh((modelDir() + "icosphere.obj"), &ctx.mesh);
+	loadMesh((modelDir() + "bunny.obj"), &ctx.mesh);
 	createMeshVAO(ctx, ctx.mesh, &ctx.meshVAO);
 
 	// Load cubemap texture(s)

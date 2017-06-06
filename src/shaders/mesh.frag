@@ -42,7 +42,7 @@ void main()
     //frag_color = vec4(0.5 * N + 0.5, 1.0);
 
 	// Ambient
-	float ambient = 0.1;
+	float ambient = 0.3;
 	ambient_color = vec3(0.1, 0.0, 0.0);
 
 	// Diffuse
@@ -91,21 +91,27 @@ void main()
 	vec2 uv = vec2(u,v);
 
 	// cross-hatching shader
-	float step = 1.0/5.0;
-	float shade = ambient*shader_switch.x + diffuse*shader_switch.y + specular*shader_switch.z;
+	float step = 1.0/6.0;
+	float shade = ambient*shader_switch.y + 0.6*diffuse*shader_switch.x + specular*shader_switch.z;
 
 	if(shade < step){
-		frag_color = mix(texture(u_texture_5, uv), texture(u_texture_4, uv), 5*(shade));
+		frag_color = mix(texture(u_texture_5, uv), texture(u_texture_4, uv), 6*(shade));
 	}else if(shade < step*2){
-		frag_color = mix(texture(u_texture_4, uv), texture(u_texture_3, uv), 5*(shade-step));
+		frag_color = mix(texture(u_texture_4, uv), texture(u_texture_3, uv), 6*(shade-step));
 	}else if(shade < step*3){
-		frag_color = mix(texture(u_texture_3, uv), texture(u_texture_2, uv), 5*(shade-2*step));
+		frag_color = mix(texture(u_texture_3, uv), texture(u_texture_2, uv), 6*(shade-2*step));
 	}else if(shade < step*4){
-		frag_color = mix(texture(u_texture_2, uv), texture(u_texture_1, uv), 5*(shade-3*step));
+		frag_color = mix(texture(u_texture_2, uv), texture(u_texture_1, uv), 6*(shade-3*step));
+	}else if(shade < step*5){
+		frag_color = mix(texture(u_texture_1, uv), texture(u_texture_0, uv), 6*(shade-4*step));
 	}else{
-		frag_color = mix(texture(u_texture_1, uv), texture(u_texture_0, uv), 5*(shade-4*step));
+		frag_color = mix(texture(u_texture_0, uv), vec4(1.0), 6*(shade-5*step));
 	}
 	
+	if(frag_color.r < 0.93){
+		//frag_color = mix(frag_color, vec4(0.0, 0.6, 0.0, 1.0), 0.8);
+	}
+
 	// Cel shading outline
 	// Bra parametrar för imgui
 	
